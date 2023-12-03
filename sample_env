@@ -2,5 +2,13 @@ VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
 SHORT_DURATION = 5
 LONG_DURATION = 10
-TASK01_IMG_SRC = assets/task01_img.jpg
+
 TASK01_OUTPUT = outputs/task01.mp4
+TASK01_IMG_SRC = assets/task01_img.jpg
+TASK01_FONT_SRC = assets/task01_font.ttf
+TASK01_MSG = The IFA doesn’t offer separate down payment assistance (DPA) programs for first-time homebuyers, but rather, assistance in conjunction with the FirstHome and Homes for Iowans programs
+TASK01_TXT_COLOR = white
+TASK01_TXT_METHOD = caption
+TASK01_TXT_SIZE_X = 1000
+TASK01_TXT_SIZE_Y = 1000
+TASK01_TXT_FONTSIZE = 24
