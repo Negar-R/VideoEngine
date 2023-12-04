@@ -14,8 +14,15 @@ TASK01_TXT_SIZE_Y = 1000
 TASK01_TXT_FONTSIZE = 24
 
 TASK02_VIDEO_SRC = assets/task02_video.mp4
+TASK02_OUTPUT_PART_1 = outputs/task02_part1.mp4
+TASK02_OUTPUT_PART_2 = outputs/task02_part2.mp4
+TASK02_OUTPUT_PART_3 = outputs/task02_part3.mp4
+TASK02_VOLUME_NUMBER = 0.1
+TASK02_SPEED_NUMBER = 1.5
 
 
+TASK03_DURATION = 10
 TASK03_IMG_SRC = assets/task03_img.jpg
+TASK03_AUDIO_SRC = assets/task03_audio.mp3
 TASK03_BG_RGB_COLOR = [204, 198, 200]
 TASK03_OUTPUT = outputs/task03.mp4

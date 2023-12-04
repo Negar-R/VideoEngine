@@ -32,23 +32,31 @@ def task02_part_by_part_run():
     clip.set_video(ClipType.VIDEO_FILE_CLIP)
 
     extracted_clip = extract_sub_clip(clip, 5, 15)
-    Clip.write(extracted_clip.video, "outputs/task02_part1.mp4")
+    Clip.write(extracted_clip.video, os.getenv("TASK02_OUTPUT_PART_1"))
 
-    volume_changed_clip = volume_clip_change(clip, 5, 10, 0.1)
-    Clip.write(volume_changed_clip.video, "outputs/task02_part2.mp4")
+    volume_changed_clip = volume_clip_change(
+        clip, 5, 10, float(os.getenv("TASK02_VOLUME_NUMBER"))
+    )
+    Clip.write(volume_changed_clip.video, os.getenv("TASK02_OUTPUT_PART_2"))
 
-    speed_changed_clip = speed_clip_change(clip, 10, None, 1.5)
-    Clip.write(speed_changed_clip.video, "outputs/task02_part3.mp4")
+    speed_changed_clip = speed_clip_change(
+        clip, 10, None, float(os.getenv("TASK02_SPEED_NUMBER"))
+    )
+    Clip.write(speed_changed_clip.video, os.getenv("TASK02_OUTPUT_PART_3"))
 
 
 def task03_run():
-    clip = Clip(width=video_width, height=video_height, duration=10)
+    clip = Clip(
+        width=video_width,
+        height=video_height,
+        duration=int(os.getenv("TASK03_DURATION")),
+    )
     clip.set_video(ClipType.VIDEO_CLIP)
     clip.set_background_img(
         os.getenv("TASK03_IMG_SRC"), resize=False, position=("center", "center")
     )
     clip.set_background_color([204, 198, 200])
-    clip.set_audio("assets/task03_audio.mp3")
+    clip.set_audio(os.getenv("TASK03_AUDIO_SRC"))
     Clip.write(
         clip.create_composite_clip(
             clip.video, clip.background_color, *clip.background_img
