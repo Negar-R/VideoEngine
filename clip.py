@@ -7,7 +7,9 @@ from moviepy.editor import (
     VideoFileClip,
     ImageClip,
     ColorClip,
+    AudioFileClip,
     CompositeVideoClip,
+    CompositeAudioClip,
     concatenate_videoclips,
     vfx,
     afx,
@@ -80,6 +82,12 @@ class Clip:
         self.text.append(
             text.set_duration(duration or self.duration).set_position(position)
         )
+
+    def set_audio(self, src: str, start_time: int = 0, duration: int = None):
+        self.audio.append(
+            AudioFileClip(src).subclip(start_time, duration or self.duration)
+        )
+        self.video.audio = CompositeAudioClip(self.audio)
 
     def create_composite_clip(self, *args):
         return CompositeVideoClip([*args])

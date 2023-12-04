@@ -42,12 +42,13 @@ def task02_part_by_part_run():
 
 
 def task03_run():
-    clip = Clip(width=video_width, height=video_height, duration=5)
+    clip = Clip(width=video_width, height=video_height, duration=10)
     clip.set_video(ClipType.VIDEO_CLIP)
     clip.set_background_img(
         os.getenv("TASK03_IMG_SRC"), resize=False, position=("center", "center")
     )
     clip.set_background_color([204, 198, 200])
+    clip.set_audio("assets/task03_audio.mp3")
     Clip.write(
         clip.create_composite_clip(
             clip.video, clip.background_color, *clip.background_img
