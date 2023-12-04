@@ -5,9 +5,12 @@ from PIL import Image
 from moviepy.editor import (
     VideoClip,
     VideoFileClip,
-    CompositeVideoClip,
     ImageClip,
     ColorClip,
+    CompositeVideoClip,
+    concatenate_videoclips,
+    vfx,
+    afx,
 )
 from text import Text
 from typing import Tuple, List
@@ -32,6 +35,7 @@ class Clip:
         self.width = kwargs.get("width")
         self.height = kwargs.get("height")
         self.duration = kwargs.get("duration")
+        self.video_src = kwargs.get("video_src")
         self.frame = None
         self.video = None
         self.background_color = None
@@ -39,9 +43,9 @@ class Clip:
         self.text = list()
         self.audio = list()
 
-    def set_video(self, clip_type: ClipType, src: str = None):
+    def set_video(self, clip_type: ClipType):
         self.video = (
-            VideoFileClip(src)
+            VideoFileClip(self.video_src)
             if clip_type == ClipType.VIDEO_FILE_CLIP
             else VideoClip(self.make_frame, duration=self.duration)
         )
@@ -88,3 +92,64 @@ class Clip:
         fps: int = 24,
     ):
         clip.write_videofile(dest, codec=codec, fps=fps)
+
+
+def extract_sub_clip(clip: Clip, start_second: int = 0, end_second: int = None):
+    modified_clip = Clip(video_src=clip.video_src)
+    modified_clip.set_video(ClipType.VIDEO_FILE_CLIP)
+    try:
+        modified_clip.video = modified_clip.video.subclip(start_second, end_second)
+        return modified_clip
+    except Exception as e:
+        print(e)
+
+
+def fx_modify_clip(*args, **kwargs):
+    start_second = kwargs.get("start_second")
+    end_second = kwargs.get("end_second")
+
+    modified_clip = Clip(video_src=kwargs.get("clip").video_src)
+    modified_clip.set_video(ClipType.VIDEO_FILE_CLIP)
+
+    clip_parts = list()
+
+    try:
+        clip_parts.append(extract_sub_clip(modified_clip, 0, start_second).video)
+        clip_parts.append(
+            modified_clip.video.subclip(start_second, end_second).fx(*args)
+        )
+        if end_second:
+            clip_parts.append(
+                extract_sub_clip(
+                    modified_clip, end_second, modified_clip.duration
+                ).video
+            )
+        concatenated_clip = concatenate_videoclips(clip_parts)
+        modified_clip.video = concatenated_clip
+        return modified_clip
+    except Exception as e:
+        print(e)
+
+
+def volume_clip_change(
+    clip: Clip, start_second: int = 0, end_second: int = None, volume: float = 1.0
+):
+    return fx_modify_clip(
+        afx.volumex,
+        volume,
+        clip=clip,
+        start_second=start_second,
+        end_second=end_second,
+    )
+
+
+def speed_clip_change(
+    clip: Clip, start_second: int = 0, end_second: int = None, speed: float = 1.0
+):
+    return fx_modify_clip(
+        vfx.speedx,
+        speed,
+        clip=clip,
+        start_second=start_second,
+        end_second=end_second,
+    )

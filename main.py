@@ -1,5 +1,5 @@
 import os
-from clip import Clip, ClipType
+from clip import Clip, ClipType, extract_sub_clip, volume_clip_change, speed_clip_change
 from text import Text
 from dotenv import load_dotenv
 
@@ -27,6 +27,20 @@ def task01_run():
     )
 
 
+def task02_part_by_part_run():
+    clip = Clip(video_src=os.getenv("TASK02_VIDEO_SRC"))
+    clip.set_video(ClipType.VIDEO_FILE_CLIP)
+
+    extracted_clip = extract_sub_clip(clip, 5, 15)
+    Clip.write(extracted_clip.video, "outputs/task02_part1.mp4")
+
+    volume_changed_clip = volume_clip_change(clip, 5, 10, 0.1)
+    Clip.write(volume_changed_clip.video, "outputs/task02_part2.mp4")
+
+    speed_changed_clip = speed_clip_change(clip, 10, None, 1.5)
+    Clip.write(speed_changed_clip.video, "outputs/task02_part3.mp4")
+
+
 def task03_run():
     clip = Clip(width=video_width, height=video_height, duration=5)
     clip.set_video(ClipType.VIDEO_CLIP)
@@ -43,5 +57,6 @@ def task03_run():
 
 
 if __name__ == "__main__":
-    # task01_run()
+    task01_run()
+    task02_part_by_part_run()
     task03_run()
