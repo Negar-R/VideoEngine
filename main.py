@@ -31,17 +31,17 @@ def task03_run():
     clip = Clip(width=video_width, height=video_height, duration=5)
     clip.set_video(ClipType.VIDEO_CLIP)
     clip.set_background_img(
-        "assets/task03_img.jpg", resize=False, position=("center", "center")
+        os.getenv("TASK03_IMG_SRC"), resize=False, position=("center", "center")
     )
-    clip.set_background_color([113, 181, 184])
+    clip.set_background_color([204, 198, 200])
     Clip.write(
         clip.create_composite_clip(
             clip.video, clip.background_color, *clip.background_img
         ),
-        "outputs/task03.mp4",
+        os.getenv("TASK03_OUTPUT"),
     )
 
 
 if __name__ == "__main__":
-    task01_run()
+    # task01_run()
     task03_run()
