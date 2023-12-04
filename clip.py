@@ -89,7 +89,7 @@ class Clip:
         )
         self.video.audio = CompositeAudioClip(self.audio)
 
-    def create_composite_clip(self, *args):
+    def create_composite_clip(self, *args) -> VideoClip:
         return CompositeVideoClip([*args])
 
     @staticmethod
@@ -102,7 +102,7 @@ class Clip:
         clip.write_videofile(dest, codec=codec, fps=fps)
 
 
-def extract_sub_clip(clip: Clip, start_second: int = 0, end_second: int = None):
+def extract_sub_clip(clip: Clip, start_second: int = 0, end_second: int = None) -> Clip:
     modified_clip = Clip(video_src=clip.video_src)
     modified_clip.set_video(ClipType.VIDEO_FILE_CLIP)
     try:
@@ -112,7 +112,7 @@ def extract_sub_clip(clip: Clip, start_second: int = 0, end_second: int = None):
         print(e)
 
 
-def fx_modify_clip(*args, **kwargs):
+def fx_modify_clip(*args, **kwargs) -> Clip:
     start_second = kwargs.get("start_second")
     end_second = kwargs.get("end_second")
 
@@ -141,7 +141,7 @@ def fx_modify_clip(*args, **kwargs):
 
 def volume_clip_change(
     clip: Clip, start_second: int = 0, end_second: int = None, volume: float = 1.0
-):
+) -> Clip:
     return fx_modify_clip(
         afx.volumex,
         volume,
@@ -153,7 +153,7 @@ def volume_clip_change(
 
 def speed_clip_change(
     clip: Clip, start_second: int = 0, end_second: int = None, speed: float = 1.0
-):
+) -> Clip:
     return fx_modify_clip(
         vfx.speedx,
         speed,
